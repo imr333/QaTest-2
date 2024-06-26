@@ -1,66 +1,84 @@
-import com.codeborne.selenide.ClickOptions;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class HomePage {
 
+    SelenideElement visibleSlide1 = $("[src='../img/amp.svg']").shouldBe(visible);
+    SelenideElement visibleSlide2 = $("[src='../img/boombox.svg']").shouldBe(visible);
+    SelenideElement visibleSlide3 = $("[src='../img/nintendo.svg']").shouldBe(visible);
+    SelenideElement rightCarouselControl = $(".right, carousel-control");
+    SelenideElement leftCarouselControl = $(".left, carousel-control");
+
     @BeforeAll
-    static void beforeAll(){
+    static void beforeAll() {
         Configuration.browser = "Chrome";
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://webdriveruniversity.com";
     }
 
     @AfterEach
-    void afterEach(){
-        sleep(3000);
+    void afterEach() {
+        sleep(1000);
         closeWebDriver();
     }
 
-    /*решил сделать два метода с определением значений для навбаров, на домашней странице*/
-    public void topNavbar(){
+    /*сделал два метода с определением значений для навбаров на домашней странице*/
+    public void topNavbar() {
         $(".navbar").shouldHave(text("WebdriverUniversity.com (Page Object Model)"));
     }
-    public void middleNavbar(){
+
+    public void middleNavbar() {
         $(".navbar-nav > .active").shouldHave(text("Home"));
     }
 
-//    SelenideElement pointOfSlide1 = $(".carousel-indicators > [data-slide-to='0']");
-//    SelenideElement pointOfSlide2 = $(".carousel-indicators > [data-slide-to='1']");
-//    SelenideElement pointOfSlide3 = $(".carousel-indicators > [data-slide-to='2']");
-//
-//    SelenideElement slide1 = $("#slide-image-1");
-//    SelenideElement slide2 = $("#slide-image-2");
-//    SelenideElement slide3 = $("#slide-image-3");
-
-    /*метод проверки на соответствие выбранному слайду, пока что не работает*/
-    public void actualSlides(){
-        $(".carousel-indicators > [data-slide-to='0']").click(ClickOptions.usingJavaScript());
-        $("#slide-image-1").shouldNotBe(visible);
-
+    /*метод проверки на соответствие выбранному слайду*/
+    public void checkActualSlides() {
+        /*сначала проверяем переключение слайдов по точкам*/
+        $(".carousel-indicators > [data-slide-to='0']").click();
+        visibleSlide1.shouldNotBe(visible);
         $(".carousel-indicators > [data-slide-to='1']").click();
-        $("#slide-image-2").shouldNotBe(visible);
-
+        visibleSlide2.shouldBe(visible);
         $(".carousel-indicators > [data-slide-to='2']").click();
-        $("#slide-image-3").shouldNotBe(visible);
+        visibleSlide3.shouldBe(visible);
+
+        /*далее проверяем переключение слайда по стрелке вправо/влево*/
+        sleep(1000);
+        rightCarouselControl.click();
+        visibleSlide1.shouldBe(visible);
+
+        sleep(1000);
+        rightCarouselControl.click();
+        visibleSlide2.shouldBe(visible);
+
+        sleep(1000);
+        rightCarouselControl.click();
+        visibleSlide3.shouldBe(visible);
+
+        sleep(1000);
+        leftCarouselControl.click();
+        visibleSlide2.shouldBe(visible);
+
+        sleep(1000);
+        leftCarouselControl.click();
+        visibleSlide1.shouldBe(visible);
+
+        sleep(1000);
+        leftCarouselControl.click();
+        visibleSlide3.shouldBe(visible);
     }
+
     @Test
-    void test(){
+    void test() {
         open("/Page-Object-Model/index.html");
 
-        /*проверка значений навбаров*/
         topNavbar();
         middleNavbar();
-        actualSlides();
-
-
+        checkActualSlides();
     }
 }
