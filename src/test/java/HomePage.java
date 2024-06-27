@@ -9,9 +9,9 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class HomePage {
 
-    SelenideElement visibleSlide1 = $("[src='../img/amp.svg']").shouldBe(visible);
-    SelenideElement visibleSlide2 = $("[src='../img/boombox.svg']").shouldBe(visible);
-    SelenideElement visibleSlide3 = $("[src='../img/nintendo.svg']").shouldBe(visible);
+    SelenideElement visibleSlide1 = $("[src='../img/amp.svg']");
+    SelenideElement visibleSlide2 = $("[src='../img/boombox.svg']");
+    SelenideElement visibleSlide3 = $("[src='../img/nintendo.svg']");
     SelenideElement rightCarouselControl = $(".right, carousel-control");
     SelenideElement leftCarouselControl = $(".left, carousel-control");
 
@@ -41,7 +41,7 @@ public class HomePage {
     public void checkActualSlides() {
         /*сначала проверяем переключение слайдов по точкам*/
         $(".carousel-indicators > [data-slide-to='0']").click();
-        visibleSlide1.shouldNotBe(visible);
+        visibleSlide1.shouldBe(visible);
         $(".carousel-indicators > [data-slide-to='1']").click();
         visibleSlide2.shouldBe(visible);
         $(".carousel-indicators > [data-slide-to='2']").click();
