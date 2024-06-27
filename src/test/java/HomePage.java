@@ -1,10 +1,10 @@
 import com.codeborne.selenide.*;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class HomePage {
@@ -29,11 +29,11 @@ public class HomePage {
     }
 
     /*сделал два метода с определением значений для навбаров на домашней странице*/
-    public void topNavbar() {
+    public void CheckTopNavbar() {
         $(".navbar").shouldHave(text("WebdriverUniversity.com (Page Object Model)"));
     }
 
-    public void middleNavbar() {
+    public void CheckMiddleNavbar() {
         $(".navbar-nav > .active").shouldHave(text("Home"));
     }
 
@@ -74,11 +74,33 @@ public class HomePage {
     }
 
     @Test
-    void test() {
+    public void checkSlider() {
+        open("/Page-Object-Model/index.html");
+        checkActualSlides();
+    }
+
+    @Test
+    public void checkNavbar() {
+        open("/Page-Object-Model/index.html");
+        CheckTopNavbar();
+        CheckMiddleNavbar();
+    }
+
+
+    @Test
+    public void checkCaptions() {
         open("/Page-Object-Model/index.html");
 
-        topNavbar();
-        middleNavbar();
-        checkActualSlides();
+        /*в методе checkCaptions решил проверить блоки на соответствие заголовка блока к его тексту
+        норм ли создавать такие переменные как caption1 или это лютый колхоз?
+        решил сделать так, поскольку все блоки вроде с одинаковыми атрибутами, и отличаются лишь по тексту.
+        понимаю, что такие проверки большого смысла могут не нести, но интересно понять можно ли так делать?*/
+        SelenideElement caption1 = $(".thumbnail").shouldHave(text("Who Are We?"));
+        caption1.shouldHave(text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi elit sapien, tempus sit amet hendrerit volutpat, euismod vitae risus. Etiam consequat, sem et vulputate dapibus, diam enim tristique est, vitae porta eros mauris ut orci. Praesent sed velit odio. Ut massa arcu, suscipit viverra molestie at, aliquet a metus. Nullam sit amet tellus dui, ut tincidunt justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit."));
+
+        /*не стал проверять все три кнопки по несколько раз открывая модалку*/
+        $("#button-find-out-more").click();
+        $(".modal-content").shouldNotBe(visible);
+        $(".modal-footer > button[data-dismiss='modal']").shouldHave(text("Find Out More")).click();
     }
 }
