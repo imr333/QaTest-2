@@ -1,19 +1,11 @@
 import com.codeborne.selenide.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class HomePage {
-
-    SelenideElement visibleSlide1 = $("[src='../img/amp.svg']");
-    SelenideElement visibleSlide2 = $("[src='../img/boombox.svg']");
-    SelenideElement visibleSlide3 = $("[src='../img/nintendo.svg']");
-    SelenideElement rightCarouselControl = $(".right, carousel-control");
-    SelenideElement leftCarouselControl = $(".left, carousel-control");
 
     @BeforeAll
     static void beforeAll() {
@@ -29,15 +21,51 @@ public class HomePage {
     }
 
     /*сделал два метода с определением значений для навбаров на домашней странице*/
-    public void CheckTopNavbar() {
+    public void checkTopNavbar() {
         $(".navbar").shouldHave(text("WebdriverUniversity.com (Page Object Model)"));
     }
 
-    public void CheckMiddleNavbar() {
+    public void checkMiddleNavbar() {
         $(".navbar-nav > .active").shouldHave(text("Home"));
     }
 
-    /*метод проверки на соответствие выбранному слайду*/
+    @Test
+    @DisplayName("Проверка контента на соответствие странице")
+    public void checkContentOnPage() {
+        open("/Page-Object-Model/index.html");
+
+        checkTopNavbar();
+        checkMiddleNavbar();
+
+        /*также решил проверить блоки на соответствие заголовка блока к его тексту
+        норм ли создавать такие переменные как caption1 или это лютый колхоз?
+        решил сделать так, поскольку все блоки вроде с одинаковыми атрибутами, и отличаются лишь по тексту.
+        понимаю, что такие проверки большого смысла могут не нести, но интересно понять можно ли так делать?*/
+        SelenideElement caption1 = $(".thumbnail").shouldHave(text("Who Are We?"));
+        caption1.shouldHave(text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi elit sapien, tempus sit amet hendrerit volutpat, euismod vitae risus. Etiam consequat, sem et vulputate dapibus, diam enim tristique est, vitae porta eros mauris ut orci. Praesent sed velit odio. Ut massa arcu, suscipit viverra molestie at, aliquet a metus. Nullam sit amet tellus dui, ut tincidunt justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit."));
+
+        /*не стал проверять все три кнопки по несколько раз открывая модалку*/
+        $("#button-find-out-more").click();
+        $(".modal-content").shouldNotBe(visible);
+        $(".modal-footer > button[data-dismiss='modal']").shouldHave(text("Find Out More")).click();
+    }
+
+    @Test
+    @DisplayName("Проверка перехода на страницу 'Our Products'")
+    public void switchOnProductsPage() {
+        open("/Page-Object-Model/index.html");
+
+        $(byText("Our Products")).click();
+        $("#nav-title").shouldHave(text("WebDriver (New Approach To Learning)"));
+
+    }
+
+    SelenideElement visibleSlide1 = $("[src='../img/amp.svg']");
+    SelenideElement visibleSlide2 = $("[src='../img/boombox.svg']");
+    SelenideElement visibleSlide3 = $("[src='../img/nintendo.svg']");
+    SelenideElement rightCarouselControl = $(".right, carousel-control");
+    SelenideElement leftCarouselControl = $(".left, carousel-control");
+
     public void checkActualSlides() {
         /*сначала проверяем переключение слайдов по точкам*/
         $(".carousel-indicators > [data-slide-to='0']").click();
@@ -73,34 +101,12 @@ public class HomePage {
         visibleSlide3.shouldBe(visible);
     }
 
+    /*метод проверки на соответствие выбранному слайду*/
     @Test
+    @DisplayName("Проверка слайдов на соответствие")
     public void checkSlider() {
         open("/Page-Object-Model/index.html");
+
         checkActualSlides();
-    }
-
-    @Test
-    public void checkNavbar() {
-        open("/Page-Object-Model/index.html");
-        CheckTopNavbar();
-        CheckMiddleNavbar();
-    }
-
-
-    @Test
-    public void checkCaptions() {
-        open("/Page-Object-Model/index.html");
-
-        /*в методе checkCaptions решил проверить блоки на соответствие заголовка блока к его тексту
-        норм ли создавать такие переменные как caption1 или это лютый колхоз?
-        решил сделать так, поскольку все блоки вроде с одинаковыми атрибутами, и отличаются лишь по тексту.
-        понимаю, что такие проверки большого смысла могут не нести, но интересно понять можно ли так делать?*/
-        SelenideElement caption1 = $(".thumbnail").shouldHave(text("Who Are We?"));
-        caption1.shouldHave(text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi elit sapien, tempus sit amet hendrerit volutpat, euismod vitae risus. Etiam consequat, sem et vulputate dapibus, diam enim tristique est, vitae porta eros mauris ut orci. Praesent sed velit odio. Ut massa arcu, suscipit viverra molestie at, aliquet a metus. Nullam sit amet tellus dui, ut tincidunt justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit."));
-
-        /*не стал проверять все три кнопки по несколько раз открывая модалку*/
-        $("#button-find-out-more").click();
-        $(".modal-content").shouldNotBe(visible);
-        $(".modal-footer > button[data-dismiss='modal']").shouldHave(text("Find Out More")).click();
     }
 }
