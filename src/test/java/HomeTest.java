@@ -5,7 +5,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class HomePage {
+public class HomeTest {
 
     @BeforeAll
     static void beforeAll() {
