@@ -3,10 +3,12 @@ package com.github.imr333.page;
 
 import com.github.imr333.page.element.Navbar;
 
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class MainPage {
-    Navbar navbar = new Navbar();
+    private Navbar navbar = new Navbar();
 
     public Navbar navbar() {
         return this.navbar;
@@ -15,6 +17,10 @@ public class MainPage {
     public MainPage openPage() {
         open("/Page-Object-Model/index.html");
         return this;
+    }
+
+    public void checkPageIsOpen() {
+        $("#nav-title").shouldHave(exactText("WebdriverUniversity.com (Page Object Model)"));
     }
 
 }

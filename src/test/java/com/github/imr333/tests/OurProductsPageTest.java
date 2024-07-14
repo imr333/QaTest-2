@@ -1,12 +1,12 @@
 package com.github.imr333.tests;
 import com.codeborne.selenide.Configuration;
-import com.github.imr333.page.ProductsPage;
+import com.github.imr333.page.OurProductsPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Selenide.*;
 
-public class ProductsPageTest {
+public class OurProductsPageTest {
 
     @BeforeAll
     static void beforeAll() {
@@ -23,22 +23,22 @@ public class ProductsPageTest {
 
     @Test
     public void checkCards() {
-        new ProductsPage()
+        new OurProductsPage()
                 .openPage()
                 .check();
     }
 
     @Test
     public void userCanOpenHomePage(){
-        new ProductsPage()
+        new OurProductsPage()
                 .openPage()
                 .navbar()
-                .openHome();
+                .openMainPage();
     }
 
     @Test
     public void userCanOpenContactUsPage(){
-        new ProductsPage()
+        new OurProductsPage()
                 .openPage()
                 .navbar()
                 .openContactUs();

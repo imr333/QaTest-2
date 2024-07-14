@@ -1,17 +1,14 @@
 package com.github.imr333.tests;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
+import com.github.imr333.page.ContactUsPage;
 import com.github.imr333.page.MainPage;
+import com.github.imr333.page.OurProductsPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static java.time.Duration.ofSeconds;
 
 public class MainPageTest {
 
@@ -34,23 +31,28 @@ public class MainPageTest {
                 .openPage()
                 .navbar()
                 .openOurProducts();
-        $x("//p[text()='Audio']").shouldBe(visible, ofSeconds(15)); //проверка того, что открыта страница "PRODUCTS"
+        new OurProductsPage()
+                .checkPageIsOpen();
     }
 
     @Test
     public void checkUserCanOpenContactUs() {
-      new MainPage()
-              .openPage()
-              .navbar()
-              .openContactUs();
-      $("[name='contactme']").shouldBe(visible, ofSeconds(15));//проверка того, что открыта страница "CONTACT US"
-    }
-    @Test
-    public void checkUserCanOpenHome(){
         new MainPage()
                 .openPage()
                 .navbar()
-                .openHome();
-        $("#nav-title").shouldHave(exactText("WebdriverUniversity.com (Page Object Model)"));
+                .openContactUs();
+        new ContactUsPage()
+                .checkPageIsOpen();
+
+    }
+
+    @Test
+    public void checkUserCanOpenHome() {
+        new MainPage()
+                .openPage()
+                .navbar()
+                .openMainPage();
+        new MainPage()
+                .checkPageIsOpen();
     }
 }

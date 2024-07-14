@@ -1,13 +1,15 @@
 package com.github.imr333.page.element;
+
 import com.codeborne.selenide.SelenideElement;
+
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class CardProducts {
 
-    SelenideElement modal = $(".modal-content");
-    SelenideElement modalHeader = $(".modal-header");
+    private final SelenideElement modal = $(".modal-content");
+    private final SelenideElement modalHeader = $(".modal-header");
 
     private void openAndCloseSpecialOffers() {
         $("#container-special-offers").click();
@@ -36,7 +38,7 @@ public class CardProducts {
         $(byText("Proceed")).click(); //Закрыть с помощью кнопки "Proceed"
     }
 
-    public CardProducts checkCardProduct(){
+    public CardProducts checkCardProduct() {
         openAndCloseSpecialOffers();
         openAndCloseCamerasCard();
         openAndCloseAudio();

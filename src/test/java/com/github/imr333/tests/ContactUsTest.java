@@ -28,9 +28,10 @@ public class ContactUsTest {
     public void resetAndSubmitForm(){
         new ContactUsPage()
                 .openPage()
-                .setValuesInFields()
+                .setValuesInForm()
                 .resetForm()
-                .setValuesInFields()
-                .sumbitAndCheckForm();
+                .checkResetForm()
+                .setValuesInForm()
+                .submitAndCheckForm();
     }
 }
